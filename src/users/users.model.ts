@@ -1,7 +1,9 @@
-import {Column, Table, DataType, Model, BelongsToMany} from "sequelize-typescript";
+import {Column, Table, DataType, Model, BelongsToMany, HasMany} from "sequelize-typescript";
 import {ApiProperty} from "@nestjs/swagger";
 import {UserRoles} from "../roles/user-role.model";
 import {Role} from "../roles/role.model";
+import {Post} from "../posts/post.model";
+
 interface UserCreationAttrs {
     email: string;
     password: string;
@@ -10,10 +12,10 @@ interface UserCreationAttrs {
 @Table({
     tableName: "users"
 })
-export class User extends Model<User,UserCreationAttrs> {
+export class User extends Model<User, UserCreationAttrs> {
     @ApiProperty({
-        example:'1',
-        description:"Unique id"
+        example: '1',
+        description: "Unique id"
     })
     @Column({
         type: DataType.INTEGER,
@@ -23,8 +25,8 @@ export class User extends Model<User,UserCreationAttrs> {
     })
     id: number;
     @ApiProperty({
-        example:'example@gmail.com',
-        description:"User email"
+        example: 'example@gmail.com',
+        description: "User email"
     })
     @Column({
         type: DataType.STRING,
@@ -34,8 +36,8 @@ export class User extends Model<User,UserCreationAttrs> {
     email: string;
 
     @ApiProperty({
-        example:'123456',
-        description:"User password"
+        example: '123456',
+        description: "User password"
     })
     @Column({
         type: DataType.STRING,
@@ -44,8 +46,8 @@ export class User extends Model<User,UserCreationAttrs> {
     password: string;
 
     @ApiProperty({
-        example:'true || false',
-        description:"Baned || Dont Banned"
+        example: 'true || false',
+        description: "Baned || Dont Banned"
     })
     @Column({
         type: DataType.BOOLEAN,
@@ -55,8 +57,8 @@ export class User extends Model<User,UserCreationAttrs> {
     banned: boolean;
 
     @ApiProperty({
-        example:'lorem ipsum',
-        description:"Ban Reason Description"
+        example: 'lorem ipsum',
+        description: "Ban Reason Description"
     })
     @Column({
         type: DataType.STRING,
@@ -65,6 +67,9 @@ export class User extends Model<User,UserCreationAttrs> {
     banReason: string;
 
 
-@BelongsToMany(()=>Role,()=>UserRoles)
-    roles:Role[];
+    @BelongsToMany(() => Role, () => UserRoles)
+    roles: Role[];
+
+    @HasMany(()=>Post)
+    posts:Post[]
 }
